@@ -35,6 +35,7 @@ import {
 import { AppDatabase, BlogPost, PortfolioItem, ServiceItem, Booking, Enquiry, Promotion } from '../types';
 import Dialog from '../components/Dialog';
 import { motion, AnimatePresence } from 'motion/react';
+import { apiFetch } from '../utils/api';
 
 const initialAestheticItems: PortfolioItem[] = [
   {
@@ -177,7 +178,7 @@ interface PublicProps {
 export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBookingOpen }: PublicProps) {
   // Page hit logger
   useEffect(() => {
-    fetch('/api/analytics/visit', {
+    apiFetch('/api/analytics/visit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ source: 'Local Referral' })
@@ -305,7 +306,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
     }
 
     try {
-      const res = await fetch('/api/bookings', {
+      const res = await apiFetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingForm)
@@ -340,7 +341,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
     }
 
     try {
-      const res = await fetch('/api/enquiries', {
+      const res = await apiFetch('/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(enquiryForm)
@@ -384,10 +385,10 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
   };
 
   return (
-    <div className="bg-[#09090b] min-h-screen text-[#fafafa] flex flex-col font-sans selection:bg-[#F5C400]/20 selection:text-white">
+    <div className="bg-[#0a0a0a] min-h-screen text-[#fafafa] flex flex-col font-sans selection:bg-[#F5C400]/20 selection:text-white">
       
       {/* 1. HERO BANNER */}
-      <header className="relative min-h-screen flex items-center justify-center p-6 bg-radial from-[#18181b]/60 to-[#09090b] overflow-hidden">
+      <header className="relative min-h-screen flex items-center justify-center p-6 bg-radial from-[#18181b]/60 to-[#0a0a0a] overflow-hidden">
         {/* Background Visual Blobs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-amber-500/5 blur-3xl animate-pulse" />
         <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-[#009CA6]/5 blur-3xl" />
@@ -399,7 +400,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
           className="absolute inset-0 opacity-10 mix-blend-color-dodge bg-cover bg-center pointer-events-none" 
           style={{ backgroundImage: `url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=80')` }} 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/75 to-[#09090b]/20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/75 to-[#0a0a0a]/20 pointer-events-none" />
 
         <motion.div 
           initial="hidden"
@@ -425,7 +426,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
             <Sparkles className={`w-3.5 h-3.5 ${accentColorClass}`} />
             <span>FINE ART ATELIER</span>
             <span className="text-[#71717a]">•</span>
-            <span className="font-serif italic lowercase tracking-normal text-[#F5C400] font-semibold text-[11px] select-none">shoot. create. inspire.</span>
+            <span className="font-script text-2xl lowercase tracking-wide text-[#F5C400] pt-1.5 select-none leading-none">shoot. create. inspire.</span>
           </motion.div>
 
           <motion.h1 
@@ -463,7 +464,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
             </button>
             <button
               onClick={() => scrollToSection('#portfolio')}
-              className="w-full sm:w-auto px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase border border-[#27272a] hover:border-neutral-500 text-neutral-200 hover:text-white bg-[#18181b]/20 hover:bg-[#09090b]/40 cursor-pointer transition-all duration-300"
+              className="w-full sm:w-auto px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase border border-[#27272a] hover:border-neutral-500 text-neutral-200 hover:text-white bg-[#18181b]/20 hover:bg-[#0a0a0a]/40 cursor-pointer transition-all duration-300"
             >
               {db.hero.secondaryCtaText}
             </button>
@@ -484,56 +485,105 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
         </motion.div>
       </header>
 
-      {/* 2. DYNAMIC PROMOTIONS PACKAGES ALERT */}
-      {activePromotions.length > 0 && (
-        <section id="promotions" className="bg-[#09090b] py-24 border-t border-[#27272a] relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col items-center text-center space-y-4 mb-16">
-              <span className={`text-xs font-bold tracking-widest uppercase font-mono ${accentColorClass}`}>EXCLUSIVE OFFERS</span>
-              <h2 className="text-3xl sm:text-4xl font-display font-black tracking-tight text-white uppercase">Active Promotions & Specials</h2>
-              <div className="h-0.5 w-12 bg-[#27272a]" />
-            </div>
+      {/* 2. PREMIUM SUMMER PORTRAIT DEALS FEATURE */}
+      <section id="promotions" className="bg-[#0a0a0a] py-24 border-t border-[#27272a] relative overflow-hidden text-neutral-200">
+        <div className="absolute top-1/2 right-0 w-96 h-96 rounded-full bg-[#F5C400]/5 blur-[120px] pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          
+          <div className="flex flex-col items-center text-center space-y-4 mb-16">
+            <span className={`text-xs font-bold tracking-widest uppercase font-mono ${accentColorClass}`}>SEASONAL MASTERPIECE</span>
+            <h2 className="text-3xl sm:text-4xl font-display font-black tracking-tight text-white uppercase">Summer Portrait Deals</h2>
+            <div className="h-0.5 w-12 bg-[#F5C400]" />
+            <p className="text-xs text-[#a1a1aa] max-w-md font-sans">
+              This summer deserves more than phone pictures. Professional portraits with expert editing, creative posing, and beautiful outdoor locations.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {activePromotions.map((promo) => (
-                <div 
-                  key={promo.id} 
-                  className="flex flex-col sm:flex-row bg-[#18181b] border border-[#27272a] rounded-2xl overflow-hidden hover:border-neutral-500 transition-all duration-300"
-                >
-                  <div className="sm:w-2/5 relative h-48 sm:h-auto min-h-[180px]">
-                    <img 
-                      src={promo.bannerUrl} 
-                      alt={promo.title}
-                      referrerPolicy="no-referrer"
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#18181b]/90 sm:to-[#18181b]/40" />
+          <div className="bg-gradient-to-br from-[#121214] to-[#18181b] border border-[#27272a] rounded-3xl overflow-hidden shadow-2xl">
+            <div className="grid grid-cols-1 lg:grid-cols-12">
+              
+              {/* Left Column: Atmospheric Image and Promo Badge */}
+              <div className="lg:col-span-5 relative min-h-[300px] lg:min-h-full">
+                <img 
+                  src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1000&q=80" 
+                  alt="Summer Outdoor Session Capture" 
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-black/30" />
+                <div className="absolute bottom-6 left-6 right-6">
+                  <span className="inline-block px-3 py-1 bg-[#F5C400] text-black font-mono font-black text-[10px] tracking-widest uppercase rounded-full shadow-lg mb-2">
+                    LIMITED SLOTS AVAILABILITY
+                  </span>
+                  <p className="text-white text-sm font-serif italic tracking-wide font-medium shadow-sm">
+                    "Preserving raw, emotional, sun-lit memories that glow forever."
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column: Detailed Options and Checklist */}
+              <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between">
+                <div>
+                  <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                    <div className="space-y-1">
+                      <h3 className="text-2xl font-bold tracking-tight text-white font-display">THE COLLECTIVE SUMMER PASS</h3>
+                      <p className="text-xs text-[#a1a1aa] font-sans">Choose any lifestyle format below for your custom portrait adventure</p>
+                    </div>
+                    <div className="bg-[#F5C400]/10 border border-[#F5C400]/20 rounded-2xl px-5 py-3 text-center">
+                      <p className="text-[10px] text-neutral-400 uppercase tracking-widest font-mono font-bold">STARTING RATE</p>
+                      <p className="text-3xl font-mono font-black text-[#F5C400] tracking-tight mt-0.5">$170</p>
+                    </div>
                   </div>
-                  <div className="sm:w-3/5 p-6 flex flex-col justify-between space-y-4">
-                    <div className="space-y-2">
-                      <span className="inline-block px-2 py-0.5 rounded-md text-[10px] font-mono bg-[#F5C400]/10 text-[#F5C400] font-semibold tracking-wide uppercase">Campaign Open</span>
-                      <h3 className="text-base font-bold text-white tracking-tight">{promo.title}</h3>
-                      <p className="text-xs text-[#a1a1aa] leading-relaxed">{promo.description}</p>
-                    </div>
-                    <div className="flex items-center justify-between pt-2 border-t border-[#27272a] text-[10px] font-mono text-[#71717a]">
-                      <span>Ends: {promo.endDate}</span>
-                      <button 
-                        onClick={() => handleBookWithService(promo.title)}
-                        className={`text-xs font-bold hover:underline flex items-center gap-1 ${accentColorClass}`}
-                      >
-                        Claim deal <ChevronRight className="w-3 h-3" />
-                      </button>
-                    </div>
+
+                  <p className="text-xs text-[#d4d4d8] leading-relaxed mb-8">
+                    Each session is directed by EMMYSS creative lead, mapping optimal natural light transitions, customized editorial posing layouts, and delivers premium, hand-retouched high-fidelity digital deliverables.
+                  </p>
+
+                  {/* Checklist of included deals */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 mb-8">
+                    {[
+                      { title: 'Birthday Shoots', desc: 'Vibrant candid & celebration capture' },
+                      { title: 'Graduation Portraits', desc: 'Prestige classic gowns & arch milestones' },
+                      { title: 'Family Sessions', desc: 'Warm structural laughter connection' },
+                      { title: 'Couple Portraits', desc: 'Intimate cinematic sunset storytelling' },
+                      { title: 'Personal Branding', desc: 'Fast-track executive & industry headshots' },
+                    ].map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-3 group">
+                        <div className="w-5 h-5 rounded-full bg-[#F5C400]/10 flex items-center justify-center border border-[#F5C400]/30 mt-0.5 shrink-0 group-hover:bg-[#F5C400] group-hover:border-[#F5C400] transition-colors">
+                          <Check className="w-3.5 h-3.5 text-[#F5C400] group-hover:text-black transition-colors" />
+                        </div>
+                        <div className="space-y-0.5">
+                          <p className="text-xs font-bold text-white tracking-tight">{item.title}</p>
+                          <p className="text-[10px] text-neutral-400 font-light font-sans">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))}
+
+                <div className="pt-6 border-t border-[#27272a] flex flex-col sm:flex-row items-center justify-between gap-6">
+                  <div className="flex items-center gap-1.5 text-xs text-neutral-400 font-mono">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>8 Booking slots remaining for this week</span>
+                  </div>
+                  <button 
+                    onClick={() => handleBookWithService('Summer Portrait Deal ($170)')}
+                    className="w-full sm:w-auto px-8 py-3.5 text-xs font-black tracking-widest font-sans uppercase rounded-full bg-[#F5C400] text-black hover:bg-white hover:text-black transition-all duration-300 shadow-lg cursor-pointer transform active:scale-95 text-center"
+                  >
+                    Reserve Your Spot
+                  </button>
+                </div>
+
+              </div>
+
             </div>
           </div>
-        </section>
-      )}
+
+        </div>
+      </section>
 
       {/* 3. GALERIE & PORTFOLIO */}
-      <section id="portfolio" className="bg-[#09090b] py-24 border-t border-[#27272a]">
+      <section id="portfolio" className="bg-[#0a0a0a] py-24 border-t border-[#27272a]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <motion.div 
@@ -628,7 +678,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
       </section>
 
       {/* 4. ATELIER SERVICES & PRICES */}
-      <section id="services" className="bg-[#09090b] py-24 border-t border-[#27272a] relative">
+      <section id="services" className="bg-[#0a0a0a] py-24 border-t border-[#27272a] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="flex flex-col items-center text-center space-y-4 mb-16">
@@ -697,7 +747,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
       </section>
 
       {/* DYNAMIC ATELIER QUALITY STANDARDS SHOWCASE */}
-      <section className="bg-[#09090b] py-24 border-t border-[#27272a] relative overflow-hidden">
+      <section className="bg-[#0a0a0a] py-24 border-t border-[#27272a] relative overflow-hidden">
         <div className="absolute top-1/2 left-0 w-80 h-80 rounded-full bg-rose-500/5 blur-3xl" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
@@ -847,7 +897,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
       </section>
 
       {/* DYNAMIC INTERACTIVE SESSION DESIGNER */}
-      <section className="bg-[#09090b] py-24 border-t border-[#27272a] relative overflow-hidden">
+      <section className="bg-[#0a0a0a] py-24 border-t border-[#27272a] relative overflow-hidden">
         <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-amber-500/5 blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -893,7 +943,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                         className={`py-2 px-2 text-[10px] font-medium rounded-lg text-center font-sans tracking-tight transition-all cursor-pointer border ${
                           estService === cat 
                             ? `${accentBorderClass} bg-[#18181b] font-semibold border-amber-500` 
-                            : 'bg-[#09090b] border-transparent text-[#a1a1aa] hover:text-white hover:bg-neutral-900/60'
+                            : 'bg-[#0a0a0a] border-transparent text-[#a1a1aa] hover:text-white hover:bg-neutral-900/60'
                         }`}
                       >
                         {cat}
@@ -917,7 +967,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                         className={`flex-1 py-2.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer border ${
                           estDuration === h 
                             ? 'bg-white text-black border-white' 
-                            : 'bg-[#09090b] border-[#27272a] text-[#a1a1aa] hover:text-white'
+                            : 'bg-[#0a0a0a] border-[#27272a] text-[#a1a1aa] hover:text-white'
                         }`}
                       >
                         {h === 8 ? '8H (Full Day)' : `${h}-H Shoot`}
@@ -941,7 +991,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                         className={`flex-1 py-2.5 rounded-lg text-xs font-mono transition-colors cursor-pointer border ${
                           estPics === p 
                             ? 'bg-[#18181b] border-[#27272a] text-white font-bold' 
-                            : 'bg-[#09090b] border-[#27272a] text-[#a1a1aa] hover:text-white'
+                            : 'bg-[#0a0a0a] border-[#27272a] text-[#a1a1aa] hover:text-white'
                         }`}
                       >
                         {p === 100 ? 'All RAW + 100' : `${p} Master Retouched`}
@@ -959,7 +1009,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                     <select
                       value={estLocation}
                       onChange={e => setEstLocation(e.target.value as any)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white focus:outline-hidden"
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white focus:outline-hidden"
                     >
                       <option value="Studio">In-Studio (Minimalist Backdrop) (+$0)</option>
                       <option value="Outdoor">Scenic Campus / Forest / Outdoor (+$50)</option>
@@ -973,7 +1023,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                     <select
                       value={estCinema}
                       onChange={e => setEstCinema(e.target.value as any)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white focus:outline-hidden"
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white focus:outline-hidden"
                     >
                       <option value="None">No Video capture (Photos Only)</option>
                       <option value="Reel">60-Sec High contrast dynamic Instagram Reel (+$180)</option>
@@ -986,7 +1036,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
               </div>
 
               {/* Estimate Calculations display footer */}
-              <div className="pt-6 border-t border-[#27272a] flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#09090b]/80 p-6 rounded-xl border border-[#27272a]/60">
+              <div className="pt-6 border-t border-[#27272a] flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#0a0a0a]/80 p-6 rounded-xl border border-[#27272a]/60">
                 <div className="space-y-1 self-start sm:self-center">
                   <span className="text-[9px] font-mono text-[#a1a1aa] uppercase tracking-widest block font-bold">APPROXIMATE QUOTE</span>
                   <div className="flex items-baseline gap-1">
@@ -1013,7 +1063,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
       </section>
 
       {/* 3-STEP COUTURE PRODUCTION FLOW */}
-      <section className="bg-[#09090b] py-24 border-t border-[#27272a] relative">
+      <section className="bg-[#0a0a0a] py-24 border-t border-[#27272a] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
@@ -1089,7 +1139,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
       </section>
 
       {/* 5. CLIENT TESTIMONIALS */}
-      <section className="bg-[#09090b] py-24 border-t border-[#27272a] relative overflow-hidden">
+      <section className="bg-[#0a0a0a] py-24 border-t border-[#27272a] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center space-y-4 mb-16">
             <span className={`text-xs font-bold tracking-widest uppercase font-mono ${accentColorClass}`}>CLIENT RETROSPECTIVE</span>
@@ -1138,7 +1188,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
 
       {/* 6. CREATIVE BLOG & NEWS */}
       {publishedBlogPosts.length > 0 && (
-        <section id="blog" className="bg-[#09090b] py-24 border-t border-[#27272a]">
+        <section id="blog" className="bg-[#0a0a0a] py-24 border-t border-[#27272a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div className="flex flex-col items-center text-center space-y-4 mb-16">
@@ -1161,7 +1211,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute top-4 left-4 p-1.5 px-3 rounded bg-[#09090b]/85 backdrop-blur-xs text-[10px] text-white tracking-widest uppercase font-mono border border-[#27272a]">
+                    <div className="absolute top-4 left-4 p-1.5 px-3 rounded bg-[#0a0a0a]/85 backdrop-blur-xs text-[10px] text-white tracking-widest uppercase font-mono border border-[#27272a]">
                       {post.category}
                     </div>
                   </div>
@@ -1195,7 +1245,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
       )}
 
       {/* 7. ABOUT THE ATELIER */}
-      <section id="about" className="bg-[#09090b] py-24 border-t border-[#27272a]">
+      <section id="about" className="bg-[#0a0a0a] py-24 border-t border-[#27272a]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
@@ -1234,7 +1284,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
       </section>
 
       {/* 8. CONTACT & LEAD SUBMISSIONS FORM */}
-      <section id="contact" className="bg-[#09090b] py-24 border-t border-[#27272a] relative">
+      <section id="contact" className="bg-[#0a0a0a] py-24 border-t border-[#27272a] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             
@@ -1270,7 +1320,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
               </div>
 
               {/* Grayscale Google Maps Embed */}
-              <div className="w-full h-44 rounded-xl overflow-hidden border border-[#27272a] shadow-xl relative bg-[#09090b] group mt-2">
+              <div className="w-full h-44 rounded-xl overflow-hidden border border-[#27272a] shadow-xl relative bg-[#0a0a0a] group mt-2">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.3323067825006!2d-81.4920875!3d41.6053335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88310344d56be30b%3A0x6b0931e50882e38c!2s25701%20N%20Lakeland%20Blvd%2C%20Euclid%2C%20OH%2044132!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus"
                   width="100%"
@@ -1313,7 +1363,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                           value={enquiryForm.name}
                           onChange={e => setEnquiryForm(prev => ({ ...prev, name: e.target.value }))}
                           placeholder="Elizabeth Vance"
-                          className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white placeholder-neutral-600 focus:outline-hidden transition-all ${accentRingClass}`}
+                          className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white placeholder-neutral-600 focus:outline-hidden transition-all ${accentRingClass}`}
                         />
                       </div>
                       <div className="space-y-1.5">
@@ -1324,7 +1374,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                           value={enquiryForm.email}
                           onChange={e => setEnquiryForm(prev => ({ ...prev, email: e.target.value }))}
                           placeholder="elizabeth@example.com"
-                          className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white placeholder-neutral-600 focus:outline-hidden transition-all ${accentRingClass}`}
+                          className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white placeholder-neutral-600 focus:outline-hidden transition-all ${accentRingClass}`}
                         />
                       </div>
                     </div>
@@ -1338,7 +1388,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                           value={enquiryForm.phone}
                           onChange={e => setEnquiryForm(prev => ({ ...prev, phone: e.target.value }))}
                           placeholder="+1 (555) 019-9822"
-                          className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white placeholder-neutral-600 focus:outline-hidden transition-all ${accentRingClass}`}
+                          className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white placeholder-neutral-600 focus:outline-hidden transition-all ${accentRingClass}`}
                         />
                       </div>
                       <div className="space-y-1.5">
@@ -1346,7 +1396,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                         <select
                           value={enquiryForm.serviceRequested}
                           onChange={e => setEnquiryForm(prev => ({ ...prev, serviceRequested: e.target.value }))}
-                          className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white focus:outline-hidden transition-all ${accentRingClass}`}
+                          className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white focus:outline-hidden transition-all ${accentRingClass}`}
                         >
                           <option value="">General Custom Request</option>
                           {db.services.map(s => (
@@ -1364,7 +1414,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                         value={enquiryForm.message}
                         onChange={e => setEnquiryForm(prev => ({ ...prev, message: e.target.value }))}
                         placeholder="Detail dates, artistic directions, scale, or requirements..."
-                        className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white placeholder-neutral-600 focus:outline-hidden transition-all resize-none ${accentRingClass}`}
+                        className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white placeholder-neutral-600 focus:outline-hidden transition-all resize-none ${accentRingClass}`}
                       />
                     </div>
 
@@ -1430,7 +1480,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                     value={bookingForm.customerName}
                     onChange={e => setBookingForm(prev => ({ ...prev, customerName: e.target.value }))}
                     placeholder="Marcus Aurelius"
-                    className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white focus:outline-hidden ${accentRingClass}`}
+                    className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white focus:outline-hidden ${accentRingClass}`}
                   />
                 </div>
 
@@ -1443,7 +1493,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                       value={bookingForm.customerEmail}
                       onChange={e => setBookingForm(prev => ({ ...prev, customerEmail: e.target.value }))}
                       placeholder="marcus@example.com"
-                      className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white focus:outline-hidden ${accentRingClass}`}
+                      className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white focus:outline-hidden ${accentRingClass}`}
                     />
                   </div>
                   <div className="space-y-1">
@@ -1454,7 +1504,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                       value={bookingForm.customerPhone}
                       onChange={e => setBookingForm(prev => ({ ...prev, customerPhone: e.target.value }))}
                       placeholder="+1 (555) 018-9122"
-                      className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white focus:outline-hidden ${accentRingClass}`}
+                      className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white focus:outline-hidden ${accentRingClass}`}
                     />
                   </div>
                 </div>
@@ -1466,9 +1516,12 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                       required
                       value={bookingForm.serviceRequested}
                       onChange={e => setBookingForm(prev => ({ ...prev, serviceRequested: e.target.value }))}
-                      className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white focus:outline-hidden ${accentRingClass}`}
+                      className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white focus:outline-hidden ${accentRingClass}`}
                     >
                       <option value="">Select Atelier Service</option>
+                      {bookingForm.serviceRequested === 'Summer Portrait Deal ($170)' && (
+                        <option value="Summer Portrait Deal ($170)">Summer Portrait Deal ($170)</option>
+                      )}
                       {db.services.map(s => (
                         <option key={s.id} value={s.name}>{s.name} ({s.category})</option>
                       ))}
@@ -1481,7 +1534,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                       required
                       value={bookingForm.preferredDate}
                       onChange={e => setBookingForm(prev => ({ ...prev, preferredDate: e.target.value }))}
-                      className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white focus:outline-hidden ${accentRingClass}`}
+                      className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white focus:outline-hidden ${accentRingClass}`}
                     />
                   </div>
                 </div>
@@ -1493,7 +1546,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                     value={bookingForm.notes}
                     onChange={e => setBookingForm(prev => ({ ...prev, notes: e.target.value }))}
                     placeholder="Let us know if you prefer scenic outdoor campuses, monochrome high contrast editorial backdrops, custom props or other ideas..."
-                    className={`w-full px-4 py-3 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white resize-none focus:outline-hidden ${accentRingClass}`}
+                    className={`w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#27272a] text-xs text-white resize-none focus:outline-hidden ${accentRingClass}`}
                   />
                 </div>
               </div>

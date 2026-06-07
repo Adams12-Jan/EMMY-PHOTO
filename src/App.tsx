@@ -11,6 +11,7 @@ import PublicWebsite from './views/PublicWebsite';
 import AdminPortal from './views/AdminPortal';
 import { AppDatabase } from './types';
 import { Camera, RefreshCw } from 'lucide-react';
+import { apiFetch } from './utils/api';
 
 function AppContent() {
   const { currentPath } = useRouter();
@@ -21,7 +22,7 @@ function AppContent() {
   // Load database state from custom Express server
   const fetchDbState = async () => {
     try {
-      const res = await fetch('/api/db');
+      const res = await apiFetch('/api/db');
       if (!res.ok) throw new Error('Fail to retrieve dynamic assets database.');
       const data = await res.json();
       setDb(data);

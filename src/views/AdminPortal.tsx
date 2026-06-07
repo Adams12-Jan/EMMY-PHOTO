@@ -37,6 +37,7 @@ import {
   CheckCircle2,
   Bookmark
 } from 'lucide-react';
+import { apiFetch as fetch } from '../utils/api';
 import { AppDatabase, UserSession, Booking, Enquiry, BlogPost, ServiceItem, PortfolioItem, TestimonialItem, Promotion, EmailLog } from '../types';
 
 interface AdminProps {
@@ -512,7 +513,7 @@ export default function AdminPortal({ db, onRefreshDb }: AdminProps) {
   // --- ACCESS BLOCK CHECK ---
   if (!session) {
     return (
-      <div className="bg-[#09090b] min-h-screen text-[#fafafa] flex flex-col items-center justify-center p-6 selection:bg-rose-500/20">
+      <div className="bg-[#0a0a0a] min-h-screen text-[#fafafa] flex flex-col items-center justify-center p-6 selection:bg-rose-500/20">
         <div className="w-full max-w-md bg-[#18181b] border border-[#27272a] rounded-xl p-8 shadow-2xl flex flex-col space-y-8">
           
           <div className="text-center space-y-2">
@@ -530,7 +531,7 @@ export default function AdminPortal({ db, onRefreshDb }: AdminProps) {
                   placeholder="admin@emmyss.com"
                   value={loginEmail}
                   onChange={e => setLoginEmail(e.target.value)}
-                  className="w-full bg-[#09090b] border border-[#27272a] focus:border-rose-500/50 rounded-xl px-4 py-3 text-xs text-white focus:outline-hidden"
+                  className="w-full bg-[#0a0a0a] border border-[#27272a] focus:border-rose-500/50 rounded-xl px-4 py-3 text-xs text-white focus:outline-hidden"
                 />
               </div>
             </div>
@@ -552,7 +553,7 @@ export default function AdminPortal({ db, onRefreshDb }: AdminProps) {
                 placeholder="••••••••"
                 value={loginPassword}
                 onChange={e => setLoginPassword(e.target.value)}
-                className="w-full bg-[#09090b] border border-[#27272a] focus:border-rose-500/50 rounded-xl px-4 py-3 text-xs text-white focus:outline-hidden"
+                className="w-full bg-[#0a0a0a] border border-[#27272a] focus:border-rose-500/50 rounded-xl px-4 py-3 text-xs text-white focus:outline-hidden"
               />
             </div>
 
@@ -767,7 +768,7 @@ export default function AdminPortal({ db, onRefreshDb }: AdminProps) {
                           <span>{source.name}</span>
                           <span className="text-white font-mono">{source.count} views ({pct}%)</span>
                         </div>
-                        <div className="h-2 w-full bg-[#09090b] rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-[#0a0a0a] rounded-full overflow-hidden">
                           <div className={`h-full bg-rose-500 rounded-full ${barWidths[i] || 'w-[20%]'}`} />
                         </div>
                       </div>
@@ -1839,7 +1840,7 @@ export default function AdminPortal({ db, onRefreshDb }: AdminProps) {
   };
 
   return (
-    <div className="bg-[#09090b] text-neutral-200 min-h-screen flex animate-fadeIn font-sans overflow-hidden">
+    <div className="bg-[#0a0a0a] text-neutral-200 min-h-screen flex animate-fadeIn font-sans overflow-hidden">
       
       {/* Dynamic responsive sidebar elements */}
       <AdminSidebar
@@ -1850,7 +1851,7 @@ export default function AdminPortal({ db, onRefreshDb }: AdminProps) {
       />
 
       {/* Main CMS workpanel */}
-      <main className="flex-1 bg-[#09090b] p-6 sm:p-10 overflow-y-auto max-h-screen">
+      <main className="flex-1 bg-[#0a0a0a] p-6 sm:p-10 overflow-y-auto max-h-screen">
         {renderContentPanel()}
       </main>
 

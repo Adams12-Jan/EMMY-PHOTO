@@ -53,13 +53,13 @@ function getInitialDbState(): AppDatabase {
       }
     ],
     hero: {
-      title: 'CREATIVE IMAGERY FOR VISIONARY BRANDS',
-      subtitle: 'Premium photography, cinema videography, and bespoke visual identity for wedding couples, graduates, and lifestyle brands.',
-      primaryCtaText: 'Secure a Shoot',
-      secondaryCtaText: 'Explore Galleries'
+      title: "Capture Life's Best Moments",
+      subtitle: 'Professional Photography, Videography & Creative Design Services that bring your story to life.',
+      primaryCtaText: 'Book a Session',
+      secondaryCtaText: 'View Portfolio'
     },
     about: {
-      description: 'At EMMYSS Studio, we believe storytelling is a luxury art form. Operating globally and based locally, we collaborate with couples, agencies, and high-achieving individuals to craft high-fidelity, emotional imagery that endures.',
+      description: 'EMMYSS helps individuals, families, graduates, brands, and businesses preserve memories and create powerful visual stories through professional photography, videography, and creative design. We combine creativity, technical expertise, and modern editing techniques to deliver exceptional results that exceed expectations.',
       mission: 'To preserve raw elegance and human connection through immaculate visual masterpieces, ensuring every client feels elevated, seen, and remembered.',
       story: 'Founded in 2018 with a single camera and a relentless obsession with natural light, EMMYSS has grown into a premier creative agency. Our work has been featured in top-tier lifestyle editorials and branding campaigns. We continually push the boundary of visual art.'
     },
@@ -171,6 +171,38 @@ function getInitialDbState(): AppDatabase {
         testimonial: 'I booked the Deluxe Graduation Elite package and was blown away. The photographers made me feel incredibly comfortable, mapped out the perfect locations, and delivered breathtaking pictures.',
         rating: 5,
         imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        id: 'test-3',
+        name: 'Samantha Reynolds',
+        position: 'Couple Art Session Client',
+        testimonial: 'The outdoor couple session with EMMYSS was an absolute dream. Elegant lighting, professional direction, and warm cinematic edits. Cannot recommend them enough!',
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        id: 'test-4',
+        name: 'David K. Lawson',
+        position: 'Birthday Portrait Client',
+        testimonial: 'Outstanding birthday session! They captured candid laughter and made me look incredibly professional, artistic, and relaxed during the studio lights portion.',
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        id: 'test-5',
+        name: 'Elena Rostova',
+        position: 'Elite Family Portraits',
+        testimonial: 'Finding a photographer who can keep three young children smiling is a miracle. EMMYSS is extremely patient, friendly, and incredibly creative with lighting.',
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1534751516642-a131fed10495?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        id: 'test-6',
+        name: 'Marcus Brody',
+        position: 'Creative Director at Summit Inc',
+        testimonial: 'Impeccable. High-end editing standards, extremely professional equipment, and incredibly fast turnaround. Best creative studio in Ohio.',
+        rating: 5,
+        imageUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&q=80'
       }
     ],
     bookings: [
@@ -257,9 +289,9 @@ Golden Hour represents the premier window for photography. Occurring during the 
     settings: {
       business: {
         companyName: 'EMMYSS Studio',
-        phone: '+1 (555) 018-0955',
+        phone: '216-440-0155',
         email: 'info@emmyss.com',
-        address: '88 Creative Lane, Suite B, Design District',
+        address: '25701 N Lakeland Blvd, Suite 312, Euclid, OH 44132, United States',
         socials: {
           facebook: 'https://facebook.com/emmyssstudio',
           instagram: 'https://instagram.com/emmyssstudio',
