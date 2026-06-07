@@ -30,7 +30,9 @@ import {
   Sliders,
   Eye,
   Check,
-  Activity
+  Activity,
+  Video,
+  Palette
 } from 'lucide-react';
 import { AppDatabase, BlogPost, PortfolioItem, ServiceItem, Booking, Enquiry, Promotion } from '../types';
 import Dialog from '../components/Dialog';
@@ -168,6 +170,114 @@ const initialAestheticItems: PortfolioItem[] = [
   }
 ];
 
+const replicatedServices = [
+  {
+    id: "photography",
+    title: "Photography",
+    description: "Capturing details, feelings, and frozen moments in time with state-of-the-art sensory lighting and high-definition clarity.",
+    iconName: "Camera",
+    details: [
+      {
+        title: "Portrait Photography",
+        items: [
+          "Editorial & Fashion Portraits",
+          "Professional LinkedIn Headshots",
+          "Creative Studio Lighting Portraits",
+          "Fine-Art Artistic Retouching"
+        ]
+      },
+      {
+        title: "Event Photography",
+        items: [
+          "High-Society Weddings & Receptions",
+          "Corporate Galas & Networking Sumits",
+          "Concert & Music Festival Coverage",
+          "Anniversaries & Private Jubilees"
+        ]
+      },
+      {
+        title: "Commercial & Branding",
+        items: [
+          "Visual Product Spotlights",
+          "Luxury Corporate Environment Shoots",
+          "Social Media Content Packages",
+          "E-commerce Listing Enhancement"
+        ]
+      }
+    ]
+  },
+  {
+    id: "videography",
+    title: "Videography",
+    description: "Cinematic film production, storytelling, and high-frequency movement capture that conveys deep emotional depth.",
+    iconName: "Video",
+    details: [
+      {
+        title: "Event Coverage",
+        items: [
+          "Complete Wedding Film Packages",
+          "Highlight Reels & Sizzle Tapes",
+          "Multicamera Live-Stream Setups",
+          "Keynote & Corporate Presentation Recap"
+        ]
+      },
+      {
+        title: "Promotional & Commercial",
+        items: [
+          "Cinematic Brand Story Videos",
+          "Product Advertisement Loops",
+          "High-Impact Social Ad Campaigns",
+          "Real Estate Aerial Video Flights"
+        ]
+      },
+      {
+        title: "Post-Production Care",
+        items: [
+          "Premium Hollywood Color Grading",
+          "Sound FX Tuning & Master Splicing",
+          "Motion Graphics & Dynamic Titles",
+          "Social-First Mobile Crops (9:16)"
+        ]
+      }
+    ]
+  },
+  {
+    id: "graphic-design",
+    title: "Graphic Design",
+    description: "Elite visual identity systems, vector assets, and bespoke layout designs that differentiate your brand globally.",
+    iconName: "Palette",
+    details: [
+      {
+        title: "Brand Identity Design",
+        items: [
+          "Custom Signature Typography & Logos",
+          "Comprehensive Brand Guideline Manuals",
+          "Palette Calibration & Typographic Pairing",
+          "Business Stationery Kits"
+        ]
+      },
+      {
+        title: "Marketing & Print Materials",
+        items: [
+          "Event Flyers & Poster Layouts",
+          "Editorial Brochure & Catalog Mockups",
+          "Billboard & Large Format Banner Specs",
+          "Packaging & Label Engineering"
+        ]
+      },
+      {
+        title: "Digital Graphics",
+        items: [
+          "Interactive Social Media Templates",
+          "High-converting Keynote Decks",
+          "Newsletter Layout Styling",
+          "SVG Icons & Custom Vector Work"
+        ]
+      }
+    ]
+  }
+];
+
 interface PublicProps {
   db: AppDatabase;
   onRefreshDb: () => void;
@@ -188,6 +298,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
   }, []);
 
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [selectedServiceTab, setSelectedServiceTab] = useState<string>('all');
   const [selectedImage, setSelectedImage] = useState<PortfolioItem | null>(null);
   const [readingPost, setReadingPost] = useState<BlogPost | null>(null);
 
@@ -272,27 +383,31 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
   // Accent helpers based on Dynamic Settings
   const accentColorClass = db.settings.branding.accentColor === 'emerald' ? 'text-emerald-400' 
     : db.settings.branding.accentColor === 'sky' ? 'text-sky-400'
-    : db.settings.branding.accentColor === 'rose' ? 'text-rose-400'
+    : db.settings.branding.accentColor === 'rose' ? 'text-rose-450'
     : db.settings.branding.accentColor === 'purple' ? 'text-purple-400'
-    : 'text-amber-400';
+    : 'text-[#F4B400]';
 
-  const accentBgClass = db.settings.branding.accentColor === 'emerald' ? 'bg-emerald-500 hover:bg-emerald-600 focus:ring-emerald-500/20' 
-    : db.settings.branding.accentColor === 'sky' ? 'bg-sky-500 hover:bg-sky-600 focus:ring-sky-500/20'
-    : db.settings.branding.accentColor === 'rose' ? 'bg-rose-500 hover:bg-rose-600 focus:ring-rose-500/20'
-    : db.settings.branding.accentColor === 'purple' ? 'bg-purple-500 hover:bg-purple-600 focus:ring-purple-500/20'
-    : 'bg-amber-500 hover:bg-amber-600 focus:ring-amber-500/20';
+  const accentBgClass = db.settings.branding.accentColor === 'emerald' 
+    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-450 text-black font-extrabold shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] transition-all' 
+    : db.settings.branding.accentColor === 'sky' 
+    ? 'bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-450 text-black font-extrabold shadow-[0_0_15px_rgba(14,165,233,0.3)] hover:shadow-[0_0_25px_rgba(14,165,233,0.5)] transition-all'
+    : db.settings.branding.accentColor === 'rose' 
+    ? 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-400 hover:to-pink-450 text-white font-extrabold shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:shadow-[0_0_25px_rgba(244,63,94,0.5)] transition-all'
+    : db.settings.branding.accentColor === 'purple' 
+    ? 'bg-gradient-to-r from-[#8B5CF6] to-[#ED4F99] hover:from-[#7C3AED] hover:to-[#DB2777] text-white font-extrabold shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] transition-all'
+    : 'bg-gradient-to-r from-[#F4B400] to-[#E5A500] hover:from-[#FFCA28] hover:to-[#F4B400] text-black font-black shadow-[0_0_20px_rgba(244,180,0,0.35)] hover:shadow-[0_0_35px_rgba(244,180,0,0.55)] transition-all';
 
   const accentBorderClass = db.settings.branding.accentColor === 'emerald' ? 'border-emerald-500/20 hover:border-emerald-500 text-emerald-400' 
     : db.settings.branding.accentColor === 'sky' ? 'border-sky-500/20 hover:border-sky-500 text-sky-400'
     : db.settings.branding.accentColor === 'rose' ? 'border-rose-500/20 hover:border-rose-500 text-rose-400'
     : db.settings.branding.accentColor === 'purple' ? 'border-purple-500/20 hover:border-purple-500 text-purple-400'
-    : 'border-amber-500/20 hover:border-amber-500 text-amber-400';
+    : 'border-[#F4B400]/30 hover:border-[#F4B400] text-[#F4B400]';
 
   const accentRingClass = db.settings.branding.accentColor === 'emerald' ? 'focus:ring-emerald-500/30 focus:border-emerald-500' 
     : db.settings.branding.accentColor === 'sky' ? 'focus:ring-sky-500/30 focus:border-sky-500'
     : db.settings.branding.accentColor === 'rose' ? 'focus:ring-rose-500/30 focus:border-rose-500'
     : db.settings.branding.accentColor === 'purple' ? 'focus:ring-purple-500/30 focus:border-purple-500'
-    : 'focus:ring-amber-500/30 focus:border-amber-500';
+    : 'focus:ring-[#F4B400]/30 focus:border-[#F4B400]';
 
   // Booking Form Submission
   const handleBookingSubmit = async (e: React.FormEvent) => {
@@ -387,15 +502,61 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
   return (
     <div className="bg-[#0a0a0a] min-h-screen text-[#fafafa] flex flex-col font-sans selection:bg-[#F5C400]/20 selection:text-white">
       
+      {/* FLOATING HEADER NAVIGATION */}
+      <nav className="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-[#0a0a0cd8]/85 backdrop-blur-md border-b border-[#241338]/30">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* Monogram styled icon */}
+            <div className="w-9 h-9 rounded bg-gradient-to-br from-[#F4B400] to-amber-600 flex items-center justify-center text-black font-serif font-black text-lg shadow-[0_0_15px_rgba(244,180,0,0.3)]">
+              E
+            </div>
+            <span className="font-serif text-xl sm:text-2xl font-bold tracking-widest text-white uppercase leading-none pt-0.5">
+              {db.settings.business.companyName || 'EMMYSS'}
+            </span>
+          </div>
+          
+          <div className="hidden md:flex items-center gap-8">
+            <button onClick={() => scrollToSection('#services')} className="text-[10px] uppercase tracking-widest font-mono text-gray-300 hover:text-[#F4B400] transition-colors cursor-pointer bg-transparent border-0">Services</button>
+            <button onClick={() => scrollToSection('#portfolio')} className="text-[10px] uppercase tracking-widest font-mono text-gray-300 hover:text-[#F4B400] transition-colors cursor-pointer bg-transparent border-0">Portfolio</button>
+            <button onClick={() => scrollToSection('#about')} className="text-[10px] uppercase tracking-widest font-mono text-gray-300 hover:text-[#F4B400] transition-colors cursor-pointer bg-transparent border-0">About</button>
+            <button onClick={() => scrollToSection('#blog')} className="text-[10px] uppercase tracking-widest font-mono text-gray-300 hover:text-[#F4B400] transition-colors cursor-pointer bg-transparent border-0">Blog</button>
+            <button onClick={() => scrollToSection('#contact')} className="text-[10px] uppercase tracking-widest font-mono text-gray-300 hover:text-[#F4B400] transition-colors cursor-pointer bg-transparent border-0">Contact</button>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setBookingOpen(true)}
+              className={`hidden sm:inline-flex py-2.5 px-5 rounded-full text-[10px] uppercase font-mono font-bold tracking-widest transition-all cursor-pointer shadow-lg hover:scale-[1.03] active:scale-[0.97] duration-300 ${accentBgClass}`}
+            >
+              Book Atelier
+            </button>
+            
+            {/* Simple Hamburger for Mobile */}
+            <button 
+              onClick={() => scrollToSection('#contact')}
+              className="md:hidden w-8 h-8 flex items-center justify-center text-gray-300 hover:text-[#F4B400] border border-[#241338] bg-[#0c0814]/40 rounded hover:bg-[#0c0814]/80 transition-all"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+
       {/* 1. HERO BANNER */}
-      <header className="relative min-h-screen flex items-center justify-center p-6 bg-radial from-[#18181b]/60 to-[#0a0a0a] overflow-hidden">
-        {/* Background Visual Blobs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-amber-500/5 blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-[#009CA6]/5 blur-3xl" />
+      <header className="relative min-h-screen flex items-center justify-center p-6 bg-gradient-to-b from-[#090611] via-[#0E0B14] to-[#0A0A0A] overflow-hidden border-b border-[#241338]/20">
+        {/* Extreme Premium Glowing Effects */}
+        <div className="absolute top-1/4 left-1/4 w-[450px] h-[450px] rounded-full bg-gradient-to-tr from-[#F4B400]/8 to-purple-600/5 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-[#1e1435]/20 to-[#0A0A0A] blur-[150px] pointer-events-none" />
+
+        {/* Subtle Fine Art Studio Viewfinder brackets */}
+        <div className="absolute top-28 left-10 w-8 h-8 border-t border-l border-[#F4B400]/20 pointer-events-none hidden sm:block" />
+        <div className="absolute top-28 right-10 w-8 h-8 border-t border-r border-[#F4B400]/20 pointer-events-none hidden sm:block" />
+        <div className="absolute bottom-10 left-10 w-8 h-8 border-b border-l border-[#F4B400]/20 pointer-events-none hidden sm:block" />
+        <div className="absolute bottom-10 right-10 w-8 h-8 border-b border-r border-[#F4B400]/20 pointer-events-none hidden sm:block" />
 
         {/* Dynamic Backgrid Image Overlay for Premium Atmosphere */}
         <motion.div 
-          animate={{ scale: [1, 1.04, 1], opacity: [0.10, 0.18, 0.10] }}
+          animate={{ scale: [1, 1.04, 1], opacity: [0.08, 0.15, 0.08] }}
           transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute inset-0 opacity-10 mix-blend-color-dodge bg-cover bg-center pointer-events-none" 
           style={{ backgroundImage: `url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=80')` }} 
@@ -412,7 +573,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
               transition: { staggerChildren: 0.12 }
             }
           }}
-          className="relative max-w-5xl mx-auto text-center space-y-8 px-4 z-10 flex flex-col items-center"
+          className="relative max-w-5xl mx-auto text-center space-y-8 px-4 z-10 flex flex-col items-center pt-16"
         >
           
           {/* Subtle Accent Pill */}
@@ -421,12 +582,12 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
               hidden: { opacity: 0, scale: 0.9, y: 10 },
               visible: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 220 } }
             }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#27272a] bg-[#18181b]/60 text-[#a1a1aa] text-[10px] font-mono tracking-widest uppercase"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#241338]/50 bg-[#140E1F]/85 text-[#CCCCCC] text-[10px] font-mono tracking-widest uppercase shadow-xl"
           >
-            <Sparkles className={`w-3.5 h-3.5 ${accentColorClass}`} />
-            <span>FINE ART ATELIER</span>
-            <span className="text-[#71717a]">•</span>
-            <span className="font-script text-2xl lowercase tracking-wide text-[#F5C400] pt-1.5 select-none leading-none">shoot. create. inspire.</span>
+            <Sparkles className={`w-3.5 h-3.5 ${accentColorClass} animate-pulse`} />
+            <span className="font-bold tracking-[0.2em]">FINE ART ATELIER</span>
+            <span className="text-[#3a2c59]">•</span>
+            <span className="font-script text-2xl lowercase tracking-wide text-[#F4B400] pt-1 select-none leading-none">shoot. create. inspire.</span>
           </motion.div>
 
           <motion.h1 
@@ -434,7 +595,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
               hidden: { opacity: 0, y: 30 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
             }}
-            className="text-4xl sm:text-6xl md:text-8xl font-display font-black tracking-tight text-white max-w-4xl text-center leading-[1.05] uppercase"
+            className="text-4xl sm:text-6xl md:text-8xl font-serif font-black tracking-tight text-white max-w-5xl text-center leading-[1.05] uppercase"
           >
             {db.hero.title}
           </motion.h1>
@@ -444,7 +605,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
               hidden: { opacity: 0, y: 18 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
             }}
-            className="text-sm sm:text-lg text-[#a1a1aa] font-sans max-w-2xl leading-relaxed"
+            className="text-sm sm:text-lg text-gray-300 font-sans max-w-2xl leading-relaxed font-light tracking-wide"
           >
             {db.hero.subtitle}
           </motion.p>
@@ -458,13 +619,13 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
           >
             <button
               onClick={() => setBookingOpen(true)}
-              className={`w-full sm:w-auto px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase text-white shadow-xl cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 ${accentBgClass}`}
+              className={`w-full sm:w-auto px-10 py-5 rounded-full text-xs font-bold tracking-widest uppercase text-white shadow-2xl cursor-pointer hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 ${accentBgClass}`}
             >
               {db.hero.primaryCtaText}
             </button>
             <button
               onClick={() => scrollToSection('#portfolio')}
-              className="w-full sm:w-auto px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase border border-[#27272a] hover:border-neutral-500 text-neutral-200 hover:text-white bg-[#18181b]/20 hover:bg-[#0a0a0a]/40 cursor-pointer transition-all duration-300"
+              className="w-full sm:w-auto px-10 py-5 rounded-full text-xs font-bold tracking-widest uppercase border border-[#241338] hover:border-[#F4B400]/40 text-[#CCCCCC] hover:text-white bg-[#0e0a16]/40 hover:bg-[#130E1F]/70 cursor-pointer transition-all duration-300"
             >
               {db.hero.secondaryCtaText}
             </button>
@@ -481,7 +642,7 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
           onClick={() => scrollToSection('#portfolio')}
         >
           <span className="text-[10px] font-mono tracking-widest uppercase text-neutral-400 text-center">SCROLL ATELIER</span>
-          <div className="w-1.5 h-1.5 bg-neutral-400 rounded-full animate-bounce" />
+          <div className="w-1.5 h-1.5 bg-[#F4B400] rounded-full animate-bounce" />
         </motion.div>
       </header>
 
@@ -677,71 +838,162 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
         </div>
       </section>
 
-      {/* 4. ATELIER SERVICES & PRICES */}
-      <section id="services" className="bg-[#0a0a0a] py-24 border-t border-[#27272a] relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* 4. ATELIER SERVICES & PRICES (REPLICATED EMYSS SERVICES CONCEPT) */}
+      <section id="services" className="relative py-24 md:py-32 bg-[#0E0B14] overflow-hidden border-y border-[#241338]/30">
+        {/* Dynamic purple abstract blur flare */}
+        <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#1A1028]/40 blur-[180px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           
-          <div className="flex flex-col items-center text-center space-y-4 mb-16">
-            <span className={`text-xs font-bold tracking-widest uppercase font-mono ${accentColorClass}`}>OUR COMMISSIONS</span>
-            <h2 className="text-3xl sm:text-4xl font-display font-black tracking-tight text-white uppercase">Photography & Art Services</h2>
-            <div className="h-0.5 w-12 bg-[#27272a]" />
-            <p className="text-xs text-[#a1a1aa] max-w-md font-sans">Crafted packages to elevate your story. Select a service to initiate booking.</p>
-          </div>
-
-          {activeServices.length === 0 ? (
-            <div className="py-24 text-center">
-              <p className="text-xs text-[#71717a]">No active services setup. Customize services on the admin portal.</p>
+          <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <span className="w-6 h-[1px] bg-[#F4B400]" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#F4B400] font-bold">What We Orchestrate</span>
+              <span className="w-6 h-[1px] bg-[#F4B400]" />
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {activeServices.map((service) => (
-                <div 
-                  key={service.id}
-                  className="bg-[#18181b] border border-[#27272a] rounded-xl p-8 hover:border-neutral-500 transition-all duration-300 flex flex-col justify-between group h-full"
-                >
-                  <div className="space-y-6">
-                    {/* Header */}
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-1.5">
-                        <span className="text-[10px] font-mono font-bold text-[#F5C400] uppercase tracking-widest bg-[#F5C400]/10 px-2 py-1 rounded-sm">
-                          {service.category}
-                        </span>
-                        <h3 className="text-lg font-bold text-white tracking-tight pt-1.5 group-hover:text-[#F5C400] transition-colors font-display">
-                          {service.name}
-                        </h3>
-                      </div>
-                      {service.price && (
-                        <div className="text-right">
-                          <span className={`text-xl font-bold font-mono text-[#F5C400]`}>
-                            {service.price}
-                          </span>
-                          <p className="text-[9px] text-[#71717a] tracking-tight mt-0.5 font-mono">ESTIMATED RATE</p>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <p className="text-xs text-[#a1a1aa] leading-relaxed font-sans">
-                      {service.description}
-                    </p>
-                  </div>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white font-bold tracking-tight mb-6">
+              Bespoke Creative <span className="italic font-normal">Services</span>
+            </h2>
+            <p className="font-sans text-sm md:text-base text-gray-300 leading-relaxed">
+              Choose a specialized discipline. We offer high-contrast digital imagery, documentary cinema loops, and bespoke modern typography styles customized for your goals.
+            </p>
 
-                  <div className="pt-8 border-t border-[#27272a] mt-6 flex items-center justify-between">
-                    <button
-                      onClick={() => handleBookWithService(service.name)}
-                      className={`px-4 py-2 text-xs font-semibold tracking-wider font-sans uppercase rounded-full cursor-pointer border text-center transition-all ${accentBorderClass}`}
-                    >
-                      Book Shoot
-                    </button>
-                    {service.featured && (
-                      <span className="flex items-center gap-1 text-[10px] font-mono text-amber-400">
-                        <Star className="w-3 h-3 fill-amber-400" /> Featured Commission
-                      </span>
-                    )}
-                  </div>
-                </div>
+            {/* Interactive Tab Filters */}
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-10">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: .97 }}
+                onClick={() => setSelectedServiceTab("all")}
+                className={`relative px-5 py-2.5 rounded text-[10px] font-mono font-bold uppercase tracking-widest border transition-all duration-300 focus:outline-none cursor-pointer ${
+                  selectedServiceTab === "all"
+                    ? "bg-[#F4B400] text-[#0C0814] border-[#F4B400] font-extrabold"
+                    : "bg-transparent text-[#CCCCCC] border-[#241338] hover:border-[#F4B400]/40"
+                }`}
+              >
+                All Concepts
+              </motion.button>
+              {replicatedServices.map(c => (
+                <motion.button
+                  key={c.id}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: .97 }}
+                  onClick={() => setSelectedServiceTab(c.id)}
+                  className={`relative px-5 py-2.5 rounded text-[10px] font-mono font-bold uppercase tracking-widest border transition-all duration-300 focus:outline-none cursor-pointer ${
+                    selectedServiceTab === c.id
+                      ? "bg-[#F4B400] text-[#0C0814] border-[#F4B400] font-extrabold"
+                      : "bg-transparent text-[#CCCCCC] border-[#241338] hover:border-[#F4B400]/40"
+                  }`}
+                  children={c.title}
+                />
               ))}
             </div>
-          )}
+          </div>
+
+          {/* Grid Layout Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 items-stretch min-h-[300px]">
+            <AnimatePresence mode="popLayout">
+              {(selectedServiceTab === "all" 
+                ? replicatedServices 
+                : replicatedServices.filter(c => c.id === selectedServiceTab)
+              ).map((categoryItem, cardIndex) => {
+                const iconMap = {
+                  Camera: Camera,
+                  Video: Video,
+                  Palette: Palette
+                };
+                const IconComponent = iconMap[categoryItem.iconName as keyof typeof iconMap] || Camera;
+
+                return (
+                  <motion.div
+                    key={categoryItem.id}
+                    layout
+                    initial={{ opacity: 0, scale: .95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: .9, y: 10 }}
+                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: .5, delay: cardIndex * .05 }}
+                    className="group relative flex flex-col justify-between h-full rounded border border-[#241338] bg-[#0B0B0BD0]/90 p-8 hover:border-[#F4B400]/40 hover:bg-[#1A1028]/30 transition-all duration-500 shadow-xl overflow-hidden hover:shadow-[#F4B400]/5"
+                  >
+                    {/* Artistic gradient blur accent */}
+                    <div className="absolute top-0 right-0 w-[150px] h-[150px] bg-gradient-to-br from-[#F4B400]/5 to-transparent rounded-full blur-2xl group-hover:from-[#F4B400]/10 transition-colors pointer-events-none" />
+
+                    <div>
+                      {/* Metric Header */}
+                      <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center justify-center w-12 h-12 rounded bg-[#1A1028] border border-[#241338] group-hover:border-[#F4B400]/30 transition-colors text-[#F4B400]">
+                          <IconComponent className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                        </div>
+                        <span className="font-mono text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                          [ srv-0{cardIndex + 1} ]
+                        </span>
+                      </div>
+
+                      {/* Heading & Paragraph */}
+                      <h3 className="font-serif text-2xl font-bold tracking-tight text-white mb-4 group-hover:text-[#F4B400] transition-colors">
+                        {categoryItem.title}
+                      </h3>
+                      <p className="font-sans text-xs md:text-sm text-gray-400 leading-relaxed mb-8">
+                        {categoryItem.description}
+                      </p>
+
+                      {/* Bullet Specifications Details */}
+                      <div className="space-y-6 pt-6 border-t border-[#241338]/35">
+                        {categoryItem.details.map((subDetail, subIdx) => (
+                          <div key={subIdx}>
+                            <h4 className="font-sans text-[11px] font-bold uppercase tracking-[0.12em] text-[#F4B400] mb-3 flex items-center gap-1.5">
+                              <Sparkles className="w-3 h-3 text-[#F5C242]/70" />
+                              {subDetail.title}
+                            </h4>
+                            <ul className="space-y-2">
+                              {subDetail.items.map((bulletItem, itemIdx) => (
+                                <li key={itemIdx} className="flex items-start gap-2.5 text-xs text-[#CCCCCC] font-sans">
+                                  <Check className="w-3.5 h-3.5 text-[#F4B400] shrink-0 mt-0.5" />
+                                  <span>{bulletItem}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Action Footnotes */}
+                    <div className="mt-10 pt-6 border-t border-[#241338]/20 flex items-center justify-between">
+                      <a 
+                        href="#booking" 
+                        className="text-[10px] font-mono font-bold uppercase tracking-wider text-white group-hover:text-[#F4B400] flex items-center gap-1.5 transition-colors"
+                      >
+                        Configure Package <span>→</span>
+                      </a>
+                      <span className="text-[9px] font-mono tracking-widest text-[#CCCCCC]/30 uppercase group-hover:text-[#CCCCCC]/60 transition-colors">
+                        EMMYSS ORIGINAL
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+
+          {/* Bottom Hybrid Proposal Callout */}
+          <div className="mt-16 md:mt-24 p-6 rounded bg-[#130E1F] border border-[#241338] max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-5 justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-[#F4B400]/10 flex items-center justify-center shrink-0">
+                <Zap className="w-5 h-5 text-[#F5C242]" />
+              </div>
+              <div>
+                <h4 className="font-sans text-sm font-semibold text-white">Need a dynamic, multi-disciplinary hybrid package?</h4>
+                <p className="font-sans text-xs text-[#CCCCCC] mt-0.5">We synchronize graphic flyers, brand video intros, and professional location photography into single bundled sessions.</p>
+              </div>
+            </div>
+            <a 
+              href="#booking" 
+              className="px-5 py-2.5 rounded bg-transparent border border-[#F4B400]/30 hover:border-[#F4B400] text-[#F4B400] hover:text-white hover:bg-[#F4B400]/5 text-xs font-mono font-bold uppercase tracking-wider transition-all whitespace-nowrap"
+            >
+              Request custom brief
+            </a>
+          </div>
 
         </div>
       </section>
