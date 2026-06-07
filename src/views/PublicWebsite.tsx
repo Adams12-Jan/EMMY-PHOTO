@@ -21,10 +21,151 @@ import {
   SlidersHorizontal,
   Bookmark,
   CheckCircle2,
-  CalendarCheck
+  CalendarCheck,
+  ShieldCheck,
+  Brush,
+  Zap,
+  Tv,
+  Compass,
+  Sliders,
+  Eye,
+  Check,
+  Activity
 } from 'lucide-react';
 import { AppDatabase, BlogPost, PortfolioItem, ServiceItem, Booking, Enquiry, Promotion } from '../types';
 import Dialog from '../components/Dialog';
+import { motion, AnimatePresence } from 'motion/react';
+
+const initialAestheticItems: PortfolioItem[] = [
+  {
+    id: 'port-aesthetic-1',
+    title: 'Amber Studio Serenity',
+    category: 'Portraits',
+    imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+    description: 'Minimalist editorial studio portrait capturing soft gold lighting.',
+    order: 1
+  },
+  {
+    id: 'port-aesthetic-2',
+    title: 'Monochrome Shadow Mood',
+    category: 'Portraits',
+    imageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80',
+    description: 'High contrast editorial portrait detailing dramatic light falloff.',
+    order: 2
+  },
+  {
+    id: 'port-aesthetic-3',
+    title: 'The Cap Throw',
+    category: 'Graduation',
+    imageUrl: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80',
+    description: 'Classic emotional candid at the graduation stage exit.',
+    order: 3
+  },
+  {
+    id: 'port-aesthetic-4',
+    title: 'Stanford Archways',
+    category: 'Graduation',
+    imageUrl: 'https://images.unsplash.com/photo-1627556704302-624286467c65?auto=format&fit=crop&w=800&q=80',
+    description: 'Golden sunlight portraits set against historical stone arches.',
+    order: 4
+  },
+  {
+    id: 'port-aesthetic-5',
+    title: 'Warm Sunday Picnic',
+    category: 'Family',
+    imageUrl: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80',
+    description: 'Golden hour picnic session highlighting genuine family smiles.',
+    order: 5
+  },
+  {
+    id: 'port-aesthetic-6',
+    title: 'Backyard Laughter',
+    category: 'Family',
+    imageUrl: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=800&q=80',
+    description: 'Pure, unscripted joy in a warm outdoor backyard garden layout.',
+    order: 6
+  },
+  {
+    id: 'port-aesthetic-7',
+    title: 'Sea Breeze & Sunsets',
+    category: 'Couples',
+    imageUrl: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80',
+    description: 'Intimate sunset couple shoot on the rocky shoreline.',
+    order: 7
+  },
+  {
+    id: 'port-aesthetic-8',
+    title: 'Embracing on Golden Sand',
+    category: 'Couples',
+    imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+    description: 'Beautiful editorial wedding romance in natural seaside lighting.',
+    order: 8
+  },
+  {
+    id: 'port-aesthetic-9',
+    title: 'Midnight Fusion Arena',
+    category: 'Events',
+    imageUrl: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80',
+    description: 'High dynamic range capture of stage fog and magenta neon flares.',
+    order: 9
+  },
+  {
+    id: 'port-aesthetic-10',
+    title: 'Gala Bokeh Speeches',
+    category: 'Events',
+    imageUrl: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80',
+    description: 'Elegant commercial gala keynotes captured under gorgeous background bokeh lights.',
+    order: 10
+  },
+  {
+    id: 'port-aesthetic-11',
+    title: 'Concrete Brand Identity',
+    category: 'Branding',
+    imageUrl: 'https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&w=800&q=80',
+    description: 'Minimalist workspace asset mockups representing professional branding aesthetics.',
+    order: 11
+  },
+  {
+    id: 'port-aesthetic-12',
+    title: 'Noir Atelier Workspace',
+    category: 'Branding',
+    imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+    description: 'Sleek design agency brand assets and dynamic desk elements.',
+    order: 12
+  },
+  {
+    id: 'port-aesthetic-13',
+    title: 'Glow In The Dark',
+    category: 'Portraits',
+    imageUrl: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80',
+    description: 'Stunning direct flash studio capture with moody twilight textures.',
+    order: 13
+  },
+  {
+    id: 'port-aesthetic-14',
+    title: 'Forest Pathway Session',
+    category: 'Couples',
+    imageUrl: 'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=800&q=80',
+    description: 'Wholesome session deep within pristine misty pine woods.',
+    order: 14
+  },
+  {
+    id: 'port-aesthetic-15',
+    title: 'The Gown Showcase',
+    category: 'Graduation',
+    imageUrl: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=800&q=80',
+    description: 'Classic university library portraits honoring high academic standard achievements.',
+    order: 15
+  },
+  {
+    id: 'port-aesthetic-16',
+    title: 'Corporate Symphony',
+    category: 'Branding',
+    imageUrl: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80',
+    description: 'Professional visual identities detailing premium editorial corporate teams.',
+    order: 16
+  }
+];
 
 interface PublicProps {
   db: AppDatabase;
@@ -49,6 +190,44 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
   const [selectedImage, setSelectedImage] = useState<PortfolioItem | null>(null);
   const [readingPost, setReadingPost] = useState<BlogPost | null>(null);
 
+  // Pricing interactive planner states
+  const [estService, setEstService] = useState<string>('Portraits');
+  const [estDuration, setEstDuration] = useState<number>(2); // hours
+  const [estPics, setEstPics] = useState<number>(30); // pic count
+  const [estLocation, setEstLocation] = useState<'Studio' | 'Outdoor' | 'Exotic'>('Studio');
+  const [estCinema, setEstCinema] = useState<'None' | 'Reel' | 'FullFilm'>('None');
+
+  const estimatedPrice = React.useMemo(() => {
+    let base = 150; // Base photographer fee
+    base += estDuration * 120; // Hourly base rate
+    
+    if (estPics === 15) base += 50;
+    else if (estPics === 30) base += 100;
+    else if (estPics === 60) base += 200;
+    else base += 350; // RAW list
+    
+    if (estLocation === 'Outdoor') base += 50;
+    if (estLocation === 'Exotic') base += 150;
+
+    if (estCinema === 'Reel') base += 180;
+    if (estCinema === 'FullFilm') base += 450;
+
+    return base;
+  }, [estDuration, estPics, estLocation, estCinema]);
+
+  const handleApplyEstimateToBooking = () => {
+    const configNotes = `[Estimate Design Selected]\n- Duration: ${estDuration}hr(s)\n- Retouched Photos: ${estPics} deliverables\n- Scene Arena: ${estLocation}\n- Video Clip Option: ${estCinema}\n- Approximate Quote: $${estimatedPrice}.00\n- Let's finalize details!`;
+    setBookingForm({
+      customerName: '',
+      customerEmail: '',
+      customerPhone: '',
+      serviceRequested: `${estService} Session`,
+      preferredDate: '',
+      notes: configNotes
+    });
+    setBookingOpen(true);
+  };
+
   // Form states
   const [bookingForm, setBookingForm] = useState({
     customerName: '',
@@ -71,11 +250,23 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
   const [enquirySuccess, setEnquirySuccess] = useState(false);
   const [enquiryError, setEnquiryError] = useState('');
 
+  // Merge database portfolio items with gorgeous fallback preloads for a highly standard rich gallery
+  const mergedPortfolio = React.useMemo(() => {
+    const dbUrls = new Set(db.portfolio.map(item => item.imageUrl.toLowerCase()));
+    const extras = initialAestheticItems.filter(item => !dbUrls.has(item.imageUrl.toLowerCase()));
+    
+    // Combine items
+    const combined = [...db.portfolio, ...extras];
+    
+    // Match db order if defined, otherwise category weight
+    return combined.sort((a, b) => (a.order || 99) - (b.order || 99));
+  }, [db.portfolio]);
+
   // Filtering portfolio
   const categories = ['All', 'Portraits', 'Graduation', 'Family', 'Couples', 'Events', 'Branding'];
   const filteredPortfolio = activeCategory === 'All'
-    ? db.portfolio
-    : db.portfolio.filter(item => item.category === activeCategory);
+    ? mergedPortfolio
+    : mergedPortfolio.filter(item => item.category === activeCategory);
 
   // Accent helpers based on Dynamic Settings
   const accentColorClass = db.settings.branding.accentColor === 'emerald' ? 'text-emerald-400' 
@@ -202,28 +393,68 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
         <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-[#009CA6]/5 blur-3xl" />
 
         {/* Dynamic Backgrid Image Overlay for Premium Atmosphere */}
-        <div className="absolute inset-0 opacity-10 mix-blend-color-dodge bg-cover bg-center pointer-events-none" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=80')` }} />
+        <motion.div 
+          animate={{ scale: [1, 1.04, 1], opacity: [0.10, 0.18, 0.10] }}
+          transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute inset-0 opacity-10 mix-blend-color-dodge bg-cover bg-center pointer-events-none" 
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=80')` }} 
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/75 to-[#09090b]/20 pointer-events-none" />
 
-        <div className="relative max-w-5xl mx-auto text-center space-y-8 px-4 z-10 flex flex-col items-center">
+        <motion.div 
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.12 }
+            }
+          }}
+          className="relative max-w-5xl mx-auto text-center space-y-8 px-4 z-10 flex flex-col items-center"
+        >
           
           {/* Subtle Accent Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#27272a] bg-[#18181b]/60 text-[#a1a1aa] text-[10px] font-mono tracking-widest uppercase">
+          <motion.div 
+            variants={{
+              hidden: { opacity: 0, scale: 0.9, y: 10 },
+              visible: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 220 } }
+            }}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#27272a] bg-[#18181b]/60 text-[#a1a1aa] text-[10px] font-mono tracking-widest uppercase"
+          >
             <Sparkles className={`w-3.5 h-3.5 ${accentColorClass}`} />
             <span>FINE ART ATELIER</span>
             <span className="text-[#71717a]">•</span>
             <span className="font-serif italic lowercase tracking-normal text-[#F5C400] font-semibold text-[11px] select-none">shoot. create. inspire.</span>
-          </div>
+          </motion.div>
 
-          <h1 className="text-4xl sm:text-6xl md:text-8xl font-display font-black tracking-tight text-white max-w-4xl text-center leading-[1.05] uppercase">
+          <motion.h1 
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            className="text-4xl sm:text-6xl md:text-8xl font-display font-black tracking-tight text-white max-w-4xl text-center leading-[1.05] uppercase"
+          >
             {db.hero.title}
-          </h1>
+          </motion.h1>
 
-          <p className="text-sm sm:text-lg text-[#a1a1aa] font-sans max-w-2xl leading-relaxed">
+          <motion.p 
+            variants={{
+              hidden: { opacity: 0, y: 18 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+            }}
+            className="text-sm sm:text-lg text-[#a1a1aa] font-sans max-w-2xl leading-relaxed"
+          >
             {db.hero.subtitle}
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+          <motion.div 
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+            }}
+            className="flex flex-col sm:flex-row items-center gap-4 pt-4 w-full sm:w-auto"
+          >
             <button
               onClick={() => setBookingOpen(true)}
               className={`w-full sm:w-auto px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase text-white shadow-xl cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 ${accentBgClass}`}
@@ -236,15 +467,21 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
             >
               {db.hero.secondaryCtaText}
             </button>
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
 
         {/* Scroll down hint */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-10 opacity-60 hover:opacity-100 transition-opacity" onClick={() => scrollToSection('#portfolio')}>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.6 }}
+          transition={{ delay: 1 }}
+          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-10 hover:opacity-100 transition-opacity" 
+          onClick={() => scrollToSection('#portfolio')}
+        >
           <span className="text-[10px] font-mono tracking-widest uppercase text-neutral-400 text-center">SCROLL ATELIER</span>
           <div className="w-1.5 h-1.5 bg-neutral-400 rounded-full animate-bounce" />
-        </div>
+        </motion.div>
       </header>
 
       {/* 2. DYNAMIC PROMOTIONS PACKAGES ALERT */}
@@ -299,15 +536,21 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
       <section id="portfolio" className="bg-[#09090b] py-24 border-t border-[#27272a]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12"
+          >
             <div className="space-y-3">
               <span className={`text-xs font-bold tracking-widest uppercase font-mono ${accentColorClass}`}>CURATED MUSEUM</span>
               <h2 className="text-3xl sm:text-4xl font-display font-black tracking-tight text-white uppercase leading-none">Our Creative Portfolios</h2>
-              <p className="text-xs text-[#a1a1aa] max-w-md font-sans">Filtered by dynamic categories maintained directly by EMMYSS staff from the CMS admin portal.</p>
+              <p className="text-xs text-[#a1a1aa] max-w-md font-sans">Enjoy a luxurious staggered masonry layout showcasing our raw elegance and bespoke visual captures.</p>
             </div>
 
             {/* Category selection */}
-            <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-[#18181b]/60 border border-[#27272a] self-start">
+            <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-[#18181b]/60 border border-[#27272a] self-start z-10">
               {categories.map((cat) => (
                 <button
                   key={cat}
@@ -322,9 +565,9 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                 </button>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          {/* Image grid */}
+          {/* Staggered Masonry Flow with layout animations */}
           {filteredPortfolio.length === 0 ? (
             <div className="py-24 text-center border border-dashed border-[#27272a] rounded-xl bg-[#18181b]/35">
               <Camera className="w-8 h-8 text-neutral-600 mx-auto mb-3" />
@@ -332,30 +575,53 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
               <p className="text-xs text-neutral-500 mt-1">Log in to /admin to upload and assign magnificent pictures.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPortfolio.map((item, idx) => (
-                <div
-                  key={item.id}
-                  onClick={() => setSelectedImage(item)}
-                  className="group relative aspect-4/3 rounded-xl overflow-hidden bg-[#18181b] border border-[#27272a] cursor-pointer hover:border-neutral-500 transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  <img
-                    src={item.imageUrl}
-                    alt={item.title}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    loading="lazy"
-                  />
-                  {/* Overlay grad */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 flex flex-col">
-                    <span className="text-[10px] font-mono text-[#F5C400] uppercase tracking-widest">{item.category}</span>
-                    <h4 className="text-sm font-bold text-white tracking-tight mt-1">{item.title}</h4>
-                    {item.description && <p className="text-[11px] text-[#a1a1aa] truncate mt-0.5">{item.description}</p>}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <motion.div 
+              layout 
+              className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6"
+            >
+              <AnimatePresence mode="popLayout">
+                {filteredPortfolio.map((item, idx) => (
+                  <motion.div
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                    transition={{
+                      opacity: { duration: 0.3 },
+                      layout: { type: 'spring', stiffness: 280, damping: 30 }
+                    }}
+                    onClick={() => setSelectedImage(item)}
+                    className="break-inside-avoid relative rounded-xl overflow-hidden bg-[#18181b] border border-[#27272a] cursor-pointer hover:border-neutral-400 transition-colors group flex flex-col mb-6"
+                  >
+                    <div className="w-full h-full relative overflow-hidden">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      {/* Top Action Zoom Indicator */}
+                      <div className="absolute top-4 right-4 p-2 rounded-full bg-neutral-950/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-neutral-800 pointer-events-none z-10">
+                        <Eye className="w-3.5 h-3.5 text-white" />
+                      </div>
+                    </div>
+                    
+                    {/* Immersive detailed footer slide-in */}
+                    <div className="p-4 sm:p-5 bg-gradient-to-t from-neutral-950 via-neutral-950/95 to-neutral-950/80 border-t border-neutral-900/60">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[9px] font-mono text-[#F5C400] bg-[#F5C400]/10 px-2 py-0.5 rounded-sm uppercase tracking-widest block font-bold">{item.category}</span>
+                        <span className="text-[9px] font-mono text-[#71717a] font-medium block">EMMYSS #{idx + 1}</span>
+                      </div>
+                      <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight mt-1.5 group-hover:text-[#F5C400] transition-colors">{item.title}</h4>
+                      {item.description && <p className="text-[11px] text-[#a1a1aa] line-clamp-2 mt-1 leading-relaxed font-sans font-light italic">"{item.description}"</p>}
+                    </div>
+
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
           )}
 
         </div>
@@ -427,6 +693,398 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
             </div>
           )}
 
+        </div>
+      </section>
+
+      {/* DYNAMIC ATELIER QUALITY STANDARDS SHOWCASE */}
+      <section className="bg-[#09090b] py-24 border-t border-[#27272a] relative overflow-hidden">
+        <div className="absolute top-1/2 left-0 w-80 h-80 rounded-full bg-rose-500/5 blur-3xl" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center text-center space-y-4 mb-16"
+          >
+            <span className={`text-xs font-bold tracking-widest uppercase font-mono ${accentColorClass}`}>PRODUCTION METRICS</span>
+            <h2 className="text-3xl sm:text-4xl font-display font-black tracking-tight text-white uppercase">Atelier Quality Standards</h2>
+            <div className="h-0.5 w-12 bg-[#27272a]" />
+            <p className="text-xs text-[#a1a1aa] max-w-lg font-sans leading-relaxed">We maintain high-end creative frameworks and raw storytelling metrics to ensure unmatched clarity.</p>
+          </motion.div>
+
+          {/* Bento-style Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {/* Card 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              whileHover={{ y: -6, borderColor: 'rgba(255, 255, 255, 0.4)' }}
+              className="bg-[#18181b]/50 p-8 rounded-2xl border border-[#27272a] flex flex-col justify-between group transition-colors"
+            >
+              <div className="space-y-4">
+                <div className="p-3 bg-neutral-900 w-fit rounded-xl border border-neutral-800 text-[#F5C400]">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase font-sans tracking-tight">Medium Format Optics</h3>
+                <p className="text-xs text-[#a1a1aa] leading-relaxed font-sans">
+                  We harness premium Hasselblad and Sony G-Master optical setups to map cinematic resolution, capturing rich detail in every exposure.
+                </p>
+              </div>
+              <span className="text-[10px] font-mono text-[#71717a] mt-6 group-hover:text-[#F5C400] transition-colors">01 / RESOLUTION CORE</span>
+            </motion.div>
+
+            {/* Card 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              whileHover={{ y: -6, borderColor: 'rgba(255, 255, 255, 0.4)' }}
+              className="bg-[#18181b]/50 p-8 rounded-2xl border border-[#27272a] flex flex-col justify-between group transition-colors"
+            >
+              <div className="space-y-4">
+                <div className="p-3 bg-neutral-900 w-fit rounded-xl border border-neutral-800 text-[#F5C400]">
+                  <Compass className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase font-sans tracking-tight">Expert Creative Guidance</h3>
+                <p className="text-xs text-[#a1a1aa] leading-relaxed font-sans">
+                  Our professional directors pre-scout campuses, select color palettes, and guide posture/angles so you feel elegant, natural, and confident.
+                </p>
+              </div>
+              <span className="text-[10px] font-mono text-[#71717a] mt-6 group-hover:text-[#F5C400] transition-colors">02 / POSING COUTURE</span>
+            </motion.div>
+
+            {/* Card 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              whileHover={{ y: -6, borderColor: 'rgba(255, 255, 255, 0.4)' }}
+              className="bg-[#18181b]/50 p-8 rounded-2xl border border-[#27272a] flex flex-col justify-between group transition-colors"
+            >
+              <div className="space-y-4">
+                <div className="p-3 bg-neutral-900 w-fit rounded-xl border border-neutral-800 text-[#F5C400]">
+                  <Brush className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase font-sans tracking-tight">High-End Retouching</h3>
+                <p className="text-xs text-[#a1a1aa] leading-relaxed font-sans">
+                  Bespoke frequency separation, micro-contrast enhancement, and atmospheric light grading. We never rely on automated generic filters.
+                </p>
+              </div>
+              <span className="text-[10px] font-mono text-[#71717a] mt-6 group-hover:text-[#F5C400] transition-colors">03 / HAND RETOUCHING</span>
+            </motion.div>
+
+            {/* Card 4 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={{ y: -6, borderColor: 'rgba(255, 255, 255, 0.4)' }}
+              className="bg-[#18181b]/50 p-8 rounded-2xl border border-[#27272a] flex flex-col justify-between group transition-colors"
+            >
+              <div className="space-y-4">
+                <div className="p-3 bg-neutral-900 w-fit rounded-xl border border-neutral-800 text-[#F5C400]">
+                  <Zap className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase font-sans tracking-tight">Ultra-Fast 48h Deliveries</h3>
+                <p className="text-xs text-[#a1a1aa] leading-relaxed font-sans">
+                  Receive full pre-curated WebP links of your shoot selections in under 48 hours. No waiting generic months to see master shots.
+                </p>
+              </div>
+              <span className="text-[10px] font-mono text-[#71717a] mt-6 group-hover:text-[#F5C400] transition-colors">04 / VELOCITY DEPLOY</span>
+            </motion.div>
+
+            {/* Card 5 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              whileHover={{ y: -6, borderColor: 'rgba(255, 255, 255, 0.4)' }}
+              className="bg-[#18181b]/50 p-8 rounded-2xl border border-[#27272a] flex flex-col justify-between group transition-colors"
+            >
+              <div className="space-y-4">
+                <div className="p-3 bg-neutral-900 w-fit rounded-xl border border-neutral-800 text-[#F5C400]">
+                  <Sliders className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase font-sans tracking-tight">Private Client Lounges</h3>
+                <p className="text-xs text-[#a1a1aa] leading-relaxed font-sans">
+                  Every booking gains entry to an offline-first private Web dashboard which hosts high-fidelity archives and metadata downloads.
+                </p>
+              </div>
+              <span className="text-[10px] font-mono text-[#71717a] mt-6 group-hover:text-[#F5C400] transition-colors">05 / PRIVATE LOUNGE</span>
+            </motion.div>
+
+            {/* Card 6 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              whileHover={{ y: -6, borderColor: 'rgba(255, 255, 255, 0.4)' }}
+              className="bg-[#18181b]/50 p-8 rounded-2xl border border-[#27272a] flex flex-col justify-between group transition-colors"
+            >
+              <div className="space-y-4">
+                <div className="p-3 bg-neutral-900 w-fit rounded-xl border border-neutral-800 text-[#F5C400]">
+                  <Tv className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase font-sans tracking-tight">Cinema Drones & Video</h3>
+                <p className="text-xs text-[#a1a1aa] leading-relaxed font-sans">
+                  Our cinema crew deploys intelligent drone maneuvers and 4K camera gear to deliver high dynamic range reels for matching profiles.
+                </p>
+              </div>
+              <span className="text-[10px] font-mono text-[#71717a] mt-6 group-hover:text-[#F5C400] transition-colors">06 / CINEMATIC EXPANSION</span>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* DYNAMIC INTERACTIVE SESSION DESIGNER */}
+      <section className="bg-[#09090b] py-24 border-t border-[#27272a] relative overflow-hidden">
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-amber-500/5 blur-3xl pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            {/* Context Title Info */}
+            <div className="lg:col-span-5 space-y-6">
+              <span className={`text-xs font-bold tracking-widest uppercase font-mono ${accentColorClass}`}>INTELLIGENT PLANNER</span>
+              <h2 className="text-3xl sm:text-5xl font-display font-black tracking-tight text-white uppercase leading-tight">
+                Dynamic Session <br />Designer
+              </h2>
+              <p className="text-xs sm:text-sm text-[#a1a1aa] leading-relaxed font-sans">
+                Tweak and customize your session on the fly. Adjust timing, quantity of high-fashion retouched pictures, visual backgrounds, and cinema options to calculate your rate and schedule.
+              </p>
+              <div className="p-5 rounded-xl bg-[#18181b]/40 border border-[#27272a] space-y-3">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#a1a1aa] block">WHAT IS INCLUDED WITH CHOSEN SLATE:</span>
+                <ul className="space-y-1.5 text-xs text-[#a1a1aa] font-sans">
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-400" /> Professional Studio Lighting / Daylight setups</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-400" /> High-Fidelity Unsplash Asset reference map</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-400" /> Pre-Shoot color mood alignment call</li>
+                  <li className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-400" /> Secure digital album with private credentials</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Interactive Calculator Panel */}
+            <div className="lg:col-span-7 bg-[#121214] border border-[#27272a] rounded-2.5xl p-8 shadow-2xl space-y-6 relative">
+              <div className="absolute top-6 right-8 text-[9px] font-mono bg-amber-500/10 text-amber-400 px-2.5 py-1 border border-amber-500/20 rounded-md font-bold uppercase tracking-wider">
+                Custom Estimator
+              </div>
+
+              <div className="space-y-5">
+                
+                {/* 1. Category */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-mono uppercase tracking-widest text-[#a1a1aa]">1. Select Main Creative Category</label>
+                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                    {['Portraits', 'Graduation', 'Family', 'Couples', 'Events', 'Branding'].map(cat => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setEstService(cat)}
+                        className={`py-2 px-2 text-[10px] font-medium rounded-lg text-center font-sans tracking-tight transition-all cursor-pointer border ${
+                          estService === cat 
+                            ? `${accentBorderClass} bg-[#18181b] font-semibold border-amber-500` 
+                            : 'bg-[#09090b] border-transparent text-[#a1a1aa] hover:text-white hover:bg-neutral-900/60'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 2. Duration Slider/Buttons */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-[10px] font-mono uppercase text-[#a1a1aa]">
+                    <span>2. Shoots Duration Setup</span>
+                    <span className="text-white font-bold">{estDuration} Hour{estDuration > 1 ? 's' : ''} shooting time</span>
+                  </div>
+                  <div className="flex gap-2">
+                    {[1, 2, 4, 8].map(h => (
+                      <button
+                        key={h}
+                        type="button"
+                        onClick={() => setEstDuration(h)}
+                        className={`flex-1 py-2.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer border ${
+                          estDuration === h 
+                            ? 'bg-white text-black border-white' 
+                            : 'bg-[#09090b] border-[#27272a] text-[#a1a1aa] hover:text-white'
+                        }`}
+                      >
+                        {h === 8 ? '8H (Full Day)' : `${h}-H Shoot`}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. Retouches */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-[10px] font-mono uppercase text-[#a1a1aa]">
+                    <span>3. Finished Editorial Deliveries</span>
+                    <span className="text-white font-bold">{estPics} Retouched deliverables</span>
+                  </div>
+                  <div className="flex gap-2">
+                    {[15, 30, 60, 100].map(p => (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => setEstPics(p)}
+                        className={`flex-1 py-2.5 rounded-lg text-xs font-mono transition-colors cursor-pointer border ${
+                          estPics === p 
+                            ? 'bg-[#18181b] border-[#27272a] text-white font-bold' 
+                            : 'bg-[#09090b] border-[#27272a] text-[#a1a1aa] hover:text-white'
+                        }`}
+                      >
+                        {p === 100 ? 'All RAW + 100' : `${p} Master Retouched`}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 4. Location and Cinema Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                  
+                  {/* Location Area Option */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-mono uppercase tracking-widest text-[#a1a1aa] block">4. Ambient Background Setup</label>
+                    <select
+                      value={estLocation}
+                      onChange={e => setEstLocation(e.target.value as any)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white focus:outline-hidden"
+                    >
+                      <option value="Studio">In-Studio (Minimalist Backdrop) (+$0)</option>
+                      <option value="Outdoor">Scenic Campus / Forest / Outdoor (+$50)</option>
+                      <option value="Exotic">Bespoke Remote Destination Setup (+$150)</option>
+                    </select>
+                  </div>
+
+                  {/* Cinema Drone Setup */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-mono uppercase tracking-widest text-[#a1a1aa] block">5. Cinematic Videography Add-on</label>
+                    <select
+                      value={estCinema}
+                      onChange={e => setEstCinema(e.target.value as any)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-[#09090b] border border-[#27272a] text-xs text-white focus:outline-hidden"
+                    >
+                      <option value="None">No Video capture (Photos Only)</option>
+                      <option value="Reel">60-Sec High contrast dynamic Instagram Reel (+$180)</option>
+                      <option value="FullFilm">4K Cine-Grade Complete 3-Min Feature Film (+$450)</option>
+                    </select>
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* Estimate Calculations display footer */}
+              <div className="pt-6 border-t border-[#27272a] flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#09090b]/80 p-6 rounded-xl border border-[#27272a]/60">
+                <div className="space-y-1 self-start sm:self-center">
+                  <span className="text-[9px] font-mono text-[#a1a1aa] uppercase tracking-widest block font-bold">APPROXIMATE QUOTE</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-display font-black text-white">${estimatedPrice}</span>
+                    <span className="text-[10px] text-[#71717a] font-mono">USD NETT</span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleApplyEstimateToBooking}
+                  className={`w-full sm:w-auto px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-widest text-white cursor-pointer shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2 ${accentBgClass}`}
+                >
+                  <span>Apply Estimate & Schedule</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 3-STEP COUTURE PRODUCTION FLOW */}
+      <section className="bg-[#09090b] py-24 border-t border-[#27272a] relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center text-center space-y-4 mb-20"
+          >
+            <span className={`text-xs font-bold tracking-widest uppercase font-mono ${accentColorClass}`}>PRODUCTION TIMELINE</span>
+            <h2 className="text-3xl sm:text-4xl font-display font-black tracking-tight text-white uppercase">The 3-Step Production Flow</h2>
+            <div className="h-0.5 w-12 bg-[#27272a]" />
+            <p className="text-xs text-[#a1a1aa] max-w-md font-sans">Our signature conceptualizer tracks your photoshoot blocks seamlessly from concept design to museum deliverables.</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 relative">
+            
+            {/* Visual Connecting Line for desktop */}
+            <div className="hidden md:block absolute top-[43px] left-[15%] right-[15%] h-0.5 bg-gradient-to-r from-amber-500/0 via-[#27272a] to-amber-500/0 pointer-events-none -z-0" />
+
+            {/* Step 1 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="flex flex-col items-center text-center space-y-4 relative z-10"
+            >
+              <div className="w-16 h-16 rounded-full bg-[#18181b] border-2 border-[#27272a] flex items-center justify-center text-xl font-mono font-black text-[#F5C400]">
+                I
+              </div>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider font-sans pt-2">Architectural Blueprint</h3>
+              <p className="text-xs text-[#a1a1aa] leading-relaxed max-w-xs font-sans">
+                Review references, map locations, finalize desired wardrobe colors, and establish lighting guides tailored for your profile.
+              </p>
+            </motion.div>
+
+            {/* Step 2 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex flex-col items-center text-center space-y-4 relative z-10"
+            >
+              <div className="w-16 h-16 rounded-full bg-[#18181b] border-2 border-[#27272a]/60 flex items-center justify-center text-xl font-mono font-black text-[#F5C400]">
+                II
+              </div>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider font-sans pt-2">Atmospheric Capture</h3>
+              <p className="text-xs text-[#a1a1aa] leading-relaxed max-w-xs font-sans">
+                Conduct the session on location or in studio. We offer masterclass pacing, posture styling guides, and music mood setups.
+              </p>
+            </motion.div>
+
+            {/* Step 3 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-col items-center text-center space-y-4 relative z-10"
+            >
+              <div className="w-16 h-16 rounded-full bg-[#18181b] border-2 border-[#27272a] flex items-center justify-center text-xl font-mono font-black text-[#F5C400]">
+                III
+              </div>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider font-sans pt-2">Artisanal Curing</h3>
+              <p className="text-xs text-[#a1a1aa] leading-relaxed max-w-xs font-sans">
+                Curate image selections, retune contrast values via hand frequency processes, and bundle high-res WebP downloads to our client portal.
+              </p>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
@@ -609,6 +1267,21 @@ export default function PublicWebsite({ db, onRefreshDb, bookingOpen, setBooking
                   </div>
                   <span>{db.settings.business.email}</span>
                 </div>
+              </div>
+
+              {/* Grayscale Google Maps Embed */}
+              <div className="w-full h-44 rounded-xl overflow-hidden border border-[#27272a] shadow-xl relative bg-[#09090b] group mt-2">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.3323067825006!2d-81.4920875!3d41.6053335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88310344d56be30b%3A0x6b0931e50882e38c!2s25701%20N%20Lakeland%20Blvd%2C%20Euclid%2C%20OH%2044132!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, filter: 'grayscale(1) invert(0.9) contrast(1.15) opacity(0.85)' }}
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  title="EMMYSS Atelier Location"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/40 via-transparent to-transparent pointer-events-none group-hover:opacity-0 transition-opacity" />
               </div>
             </div>
 
