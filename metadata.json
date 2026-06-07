@@ -1,0 +1,6 @@
+{
+  "name": "EMMYSS Studio",
+  "description": "A professional photography and creative agency website with a full-featured bespoke CMS admin portal for managing galleries, services, blog, bookings, and website content.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
